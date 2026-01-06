@@ -17,7 +17,7 @@ struct Weather {
     popup: Option<cosmic::iced::window::Id>,
     config: WeatherConfig,
     config_handler: Option<cosmic::cosmic_config::Config>,
-    temperature: f64,
+    temperature: i32,
     latitude: String,
     longitude: String,
     use_fahrenheit: bool,
@@ -36,7 +36,7 @@ impl Weather {
                 }
                 Err(error) => {
                     tracing::error!("Failed to get location forecast: {error:?}");
-                    cosmic::action::Action::App(Message::UpdateTemperature(0.0))
+                    cosmic::action::Action::App(Message::UpdateTemperature(0))
                 }
             },
         )
@@ -44,7 +44,7 @@ impl Weather {
 
     fn format_temperature(&self) -> String {
         if self.use_fahrenheit {
-            format!("{:.1}°F", self.temperature * 9.0 / 5.0 + 32.0)
+            format!("{:.1}°F", self.temperature * 9 / 5 + 32)
         } else {
             format!("{:.1}°C", self.temperature)
         }
@@ -56,7 +56,7 @@ pub enum Message {
     Tick,
     ToggleWindow,
     PopupClosed(cosmic::iced::window::Id),
-    UpdateTemperature(f64),
+    UpdateTemperature(i32),
     UpdateLatitude(String),
     UpdateLongitude(String),
     ToggleFahrenheit(bool),
@@ -83,7 +83,7 @@ impl cosmic::Application for Weather {
                 popup: None,
                 config: flags.config,
                 config_handler: flags.config_handler,
-                temperature: 0.0,
+                temperature: 0,
                 latitude: latitude.to_string(),
                 longitude: longitude.to_string(),
                 use_fahrenheit,
@@ -188,21 +188,30 @@ impl cosmic::Application for Weather {
     }
 
     fn view(&self) -> cosmic::Element<'_, Message> {
-        let icon_name = match Local::now().hour() {
+        let icon = cosmic::widget::icon::from_name(match Local::now().hour() {
             6..18 => SUN_ICON,
             _ => MOON_ICON,
+        })
+        .size(self.core.applet.suggested_size(true).0)
+        .symbolic(true);
+        let temperature = self.core.applet.text(self.format_temperature());
+
+        let data = if self.core.applet.is_horizontal() {
+            cosmic::Element::from(
+                cosmic::iced_widget::row![icon, temperature]
+                    .align_y(cosmic::iced::alignment::Vertical::Center)
+                    .spacing(4)
+                    .padding([0, self.core.applet.suggested_padding(true)]),
+            )
+        } else {
+            cosmic::Element::from(
+                cosmic::iced_widget::column![icon, temperature]
+                    .align_x(cosmic::iced::alignment::Horizontal::Center)
+                    .spacing(4)
+                    .padding([self.core.applet.suggested_padding(true), 0]),
+            )
         };
 
-        let icon = cosmic::iced_widget::row![
-            cosmic::widget::icon::from_name(icon_name)
-                .size(14)
-                .symbolic(true),
-        ]
-        .padding([3, 0, 0, 0]);
-        let temperature =
-            cosmic::iced_widget::row![cosmic::iced_widget::text(self.format_temperature())];
-
-        let data = cosmic::Element::from(cosmic::iced_widget::row![icon, temperature].spacing(4));
         let button = cosmic::widget::button::custom(data)
             .class(cosmic::theme::Button::AppletIcon)
             .on_press_down(Message::ToggleWindow);

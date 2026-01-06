@@ -92,15 +92,14 @@ struct Next12HoursDetails {
 pub async fn get_location_forecast(
     latitude: String,
     longitude: String,
-) -> Result<f64, reqwest::Error> {
+) -> Result<i32, reqwest::Error> {
     let url = format!(
         "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}&lon={longitude}",
     );
 
-    let request_builder = reqwest::Client::new().get(url).header(
-        header::USER_AGENT,
-        APP_ID,
-    );
+    let request_builder = reqwest::Client::new()
+        .get(url)
+        .header(header::USER_AGENT, APP_ID);
 
     let response = request_builder.send().await?;
     let data = response.json::<WeatherApiResponse>().await?;
@@ -109,8 +108,8 @@ pub async fn get_location_forecast(
         .properties
         .timeseries
         .first()
-        .map(|d| d.data.instant.details.air_temperature)
-        .unwrap_or(0.0);
+        .map(|d| d.data.instant.details.air_temperature as i32)
+        .unwrap_or(0);
 
     Ok(current_temperature)
 }
