@@ -8,6 +8,7 @@
   <update_contact>rwxroot@proton.me</update_contact>
   <name>Weather</name>
   <name xml:lang="cs">Počasí</name>
+  <name xml:lang="pl">Pogoda</name>
   <url type="homepage">https://github.com/cosmic-utils/cosmic-ext-applet-weather</url>
   <url type="bugtracker">https://github.com/cosmic-utils/cosmic-ext-applet-weather/issues</url>
   <url type="contribute">https://github.com/cosmic-utils/cosmic-ext-applet-weather</url>
@@ -18,9 +19,11 @@
   </branding>
   <summary>Local weather conditions for COSMIC panel</summary>
   <summary xml:lang="cs">Počasí ve vaší oblasti pro panel COSMIC</summary>
+  <summary xml:lang="pl">Lokalne warunki pogodowe dla panelu COSMIC</summary>
   <description>
     <p>Stay informed about current weather conditions from your COSMIC panel.</p>
     <p xml:lang="cs">Nechte se informovat o aktuálním počasí ve vaší oblasti z panelu COSMIC.</p>
+    <p xml:lang="pl">Dowiedz się o obecnych warunkach pogodowych prosto z panelu COSMIC.</p>
   </description>
   <icon type="stock">io.github.cosmic_utils.weather-applet-symbolic.svg</icon>
   <launchable type="desktop-id">io.github.cosmic_utils.weather-applet.desktop</launchable>
@@ -29,16 +32,19 @@
       <image>https://raw.githubusercontent.com/cosmic-utils/cosmic-ext-applet-weather/main/data/applet_screenshot_1.png</image>
       <caption>Applet screenshot 1</caption>
       <caption xml:lang="cs">Snímek zobrazující applet 1</caption>
+      <caption xml:lang="pl">Zrzut ekaranu z apletu 1</caption>
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/cosmic-utils/cosmic-ext-applet-weather/main/data/applet_screenshot_2.png</image>
       <caption>Applet screenshot 2</caption>
       <caption xml:lang="cs">Snímek zobrazující applet 2</caption>
+      <caption xml:lang="pl">Zrzut ekaranu z apletu 2</caption>
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/cosmic-utils/cosmic-ext-applet-weather/main/data/applet_screenshot_3.png</image>
       <caption>Applet screenshot 3</caption>
       <caption xml:lang="cs">Snímek zobrazující applet 3</caption>
+      <caption xml:lang="pl">Zrzut ekaranu z apletu 3</caption>
     </screenshot>
   </screenshots>
   <releases>
