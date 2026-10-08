@@ -36,6 +36,7 @@ struct Instant {
 struct InstantDetails {
     air_pressure_at_sea_level: f32,
     air_temperature: f32,
+    apparent_air_temperature: f32,
     cloud_area_fraction: f32,
     relative_humidity: f32,
     wind_from_direction: f32,
@@ -57,6 +58,7 @@ struct Summary {
 
 pub struct WeatherApiResponse {
     pub temp: i32,
+    pub apparent_temp: i32,
     pub icon: String,
     pub uv: f32,
 }
@@ -65,6 +67,7 @@ impl Default for WeatherApiResponse {
     fn default() -> Self {
         Self {
             temp: 0,
+            apparent_temp: 0,
             icon: String::from("weather-clear"),
             uv: 0.0,
         }
@@ -96,6 +99,7 @@ impl WeatherApi {
 
                 WeatherApiResponse {
                     temp: details.air_temperature as i32,
+                    apparent_temp: details.apparent_air_temperature as i32,
                     icon: Self::symbol_code_to_icon(&ts.data.next_1_hours.summary.symbol_code)
                         .to_string(),
                     uv: details.ultraviolet_index_clear_sky,
